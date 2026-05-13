@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>404 · Bonded Science · Route Collapsed</title>
+<meta name="robots" content="noindex"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #050507;
+    --white: #F0EDE6;
+    --gold: #C8A84B;
+    --electric: #00FFD1;
+    --dim: #1A1A22;
+    --mid: #2E2E3A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Noise overlay — matches main page */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Scan-lines — Bonded signature */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.10) 3px,
+      rgba(0,0,0,0.10) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* Top eyebrow bar */
+  header.top-bar {
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .top-mark {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--electric);
+  }
+
+  .top-mark span { color: var(--gold); }
+
+  .top-status {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* Main content */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .stage {
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .err-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 132px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--electric);
+    display: block;
+  }
+
+  h1 .strike {
+    position: relative;
+    color: var(--mid);
+    display: block;
+  }
+
+  h1 .strike::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 52%;
+    width: 100%; height: 3px;
+    background: var(--gold);
+  }
+
+  .doctrine {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(18px, 1.8vw, 24px);
+    line-height: 1.6;
+    color: var(--white);
+    padding-left: 24px;
+    border-left: 2px solid var(--electric);
+    margin-bottom: 16px;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .doctrine-sub {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: #888899;
+    max-width: 560px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .doctrine-sub strong { color: var(--white); }
+
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .btn-primary, .btn-ghost {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--electric);
+    color: var(--black);
+    border: none;
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,255,209,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .btn-ghost:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  /* Footer */
+  footer {
+    padding: 28px 48px;
+    border-top: 1px solid var(--mid);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #444455;
+  }
+
+  footer strong { color: #666677; font-weight: 400; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    header.top-bar { padding: 24px 28px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    main { padding: 32px 28px; }
+    footer { padding: 24px 28px; flex-direction: column; gap: 12px; text-align: center; }
+    .doctrine { padding-left: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <div class="top-mark">BONDED SCIENCE · <span>US19438644</span></div>
+  <div class="top-status">Status · Route Collapsed</div>
+</header>
+
+<main>
+  <div class="stage">
+    <p class="err-tag">Error · 404 · Path Not Found</p>
+
+    <h1>
+      <span class="strike">Path.</span>
+      <span class="strike">Page.</span>
+      <span class="strike">Address.</span>
+      <em>Rights.</em>
+      Reserved.
+    </h1>
+
+    <p class="doctrine">
+      The work persists. This URL did not.
+    </p>
+
+    <p class="doctrine-sub">
+      <strong>Provenance survives broken routes.</strong>
+      The page you were after has moved, been retired, or never existed at this address.
+      Bonded Science is patent-filed, Zenodo-deposited, and authored by
+      <strong>Derek Antoine Lee</strong> — every claim timestamped on independent
+      infrastructure exactly so a missing path here doesn't touch the substance
+      underneath. All rights and distribution rights are reserved to the originator.
+    </p>
+
+    <div class="cta-row">
+      <a href="/" class="btn-primary">Return to Bonded Science</a>
+      <a href="https://doi.org/10.5281/zenodo.18648464" class="btn-ghost" target="_blank" rel="noopener">Read the Research →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div>Bonded Science © Derek Antoine Lee · <strong>All Rights and Distribution Rights Reserved</strong> · Listed Private for Study</div>
+  <div>Site built by Ethereal Connections Co. · 2026</div>
+</footer>
+
+</body>
+</html>

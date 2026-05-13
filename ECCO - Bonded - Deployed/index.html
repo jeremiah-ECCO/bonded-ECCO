@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bonded Science — Zero Heat. Zero Water. Total Rethink.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #050507;
+    --white: #F0EDE6;
+    --gold: #C8A84B;
+    --electric: #00FFD1;
+    --dim: #1A1A22;
+    --mid: #2E2E3A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--electric);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .eyebrow span {
+    color: var(--gold);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 8vw, 120px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--electric);
+    display: block;
+  }
+
+  h1 .strike {
+    position: relative;
+    color: var(--mid);
+  }
+  h1 .strike::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 52%;
+    width: 100%; height: 3px;
+    background: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 36px;
+    font-size: 0.82rem;
+    line-height: 1.9;
+    color: #888899;
+    max-width: 400px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-sub strong {
+    color: var(--white);
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    background: var(--electric);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,255,209,0.3);
+  }
+
+  .btn-ghost {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  /* ── HERO RIGHT ── */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 80px 60px 80px 20px;
+  }
+
+  /* Hero stage — same frame language as the collab section */
+  .hero-stage {
+    position: relative;
+    width: 100%;
+    max-width: 780px;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.6s forwards;
+  }
+
+  .hero-stage-glow {
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--electric), var(--gold), var(--electric));
+    border-radius: 2px;
+    opacity: 0.4;
+    animation: borderPulse 3s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  .hero-gif-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: var(--black);
+    overflow: hidden;
+    line-height: 0;
+    display: block;
+  }
+
+  .hero-gif-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+      rgba(0,255,209,0.05) 0%,
+      transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-gif {
+    width: 100%;
+    height: auto;
+    display: block;
+    mix-blend-mode: screen;
+  }
+
+  /* scan-line overlay on gif */
+  .hero-gif-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .hero-stage-caption {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--dim);
+    border: 1px solid var(--mid);
+    border-top: none;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--mid), transparent);
+    margin: 0 80px;
+  }
+
+  /* ── SCIENCE SECTION ── */
+  .science {
+    padding: 120px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--electric);
+    margin-bottom: 24px;
+  }
+
+  .section-label.gold { color: var(--gold); }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 4vw, 60px);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--electric);
+  }
+
+  .body-text {
+    font-size: 0.8rem;
+    line-height: 2;
+    color: #888899;
+  }
+
+  .body-text strong { color: var(--white); }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .stat-card {
+    background: var(--dim);
+    border-top: 2px solid var(--electric);
+    padding: 28px 24px;
+  }
+
+  .stat-card.gold-border { border-top-color: var(--gold); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666677;
+    margin-top: 8px;
+  }
+
+  /* ── FLOW SECTION ── */
+  .flow {
+    background: var(--dim);
+    padding: 100px 80px;
+  }
+
+  .flow-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    position: relative;
+  }
+
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 1px;
+    background: linear-gradient(to right, var(--electric), var(--gold));
+  }
+
+  .flow-step {
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .step-dot {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 1px solid var(--mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--electric);
+    position: relative;
+    z-index: 2;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .flow-step:hover .step-dot {
+    border-color: var(--electric);
+    box-shadow: 0 0 24px rgba(0,255,209,0.2);
+  }
+
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .step-body {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: #666677;
+  }
+
+  /* ── PATENT SECTION ── */
+  .patent {
+    padding: 100px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .patent-card {
+    background: var(--dim);
+    border: 1px solid var(--mid);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .patent-card::before {
+    content: 'US19438644';
+    position: absolute;
+    top: -20px; right: -10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    color: rgba(200,168,75,0.04);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .patent-tag {
+    display: inline-block;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--gold);
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    padding: 6px 14px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .patent-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .patent-desc {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: #888899;
+  }
+
+  .patent-links {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .patent-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.68rem;
+    color: #666677;
+    text-decoration: none;
+    padding: 12px 16px;
+    border: 1px solid var(--mid);
+    background: rgba(0, 255, 209, 0);
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    animation: patent-link-pulse 6s ease-in-out infinite;
+  }
+
+  /* Relay timing — wave travels through the 5 links over 6s */
+  .patent-link:nth-child(1) { animation-delay: 0s; }
+  .patent-link:nth-child(2) { animation-delay: 1.2s; }
+  .patent-link:nth-child(3) { animation-delay: 2.4s; }
+  .patent-link:nth-child(4) { animation-delay: 3.6s; }
+  .patent-link:nth-child(5) { animation-delay: 4.8s; }
+
+  .patent-link:hover {
+    border-color: var(--electric);
+    color: var(--electric);
+    background: rgba(0, 255, 209, 0.04);
+    box-shadow: 0 0 24px rgba(0, 255, 209, 0.45), inset 0 0 14px rgba(0, 255, 209, 0.08);
+    animation-play-state: paused;
+  }
+
+  /* Wave freezes the moment the user engages with the list — never fight the click */
+  .patent-links:hover .patent-link {
+    animation-play-state: paused;
+  }
+
+  .patent-link::before {
+    content: '↗';
+    color: var(--electric);
+    transition: transform 0.25s ease;
+  }
+
+  .patent-link:hover::before {
+    transform: translate(2px, -2px);
+  }
+
+  @keyframes patent-link-pulse {
+    0%, 70%, 100% {
+      border-color: var(--mid);
+      color: #666677;
+      box-shadow: 0 0 0 rgba(0, 255, 209, 0);
+    }
+    12%, 22% {
+      border-color: var(--electric);
+      color: var(--electric);
+      box-shadow: 0 0 18px rgba(0, 255, 209, 0.35), inset 0 0 12px rgba(0, 255, 209, 0.07);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .patent-link { animation: none; }
+  }
+
+  /* ── ECCO COLLAB SECTION ── */
+  .ecco-collab {
+    background: var(--black);
+    padding: 120px 80px;
+    border-top: 1px solid var(--mid);
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .collab-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .collab-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .collab-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .collab-sub {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 0.82rem;
+    line-height: 2;
+    color: #888899;
+  }
+
+  /* GIF STAGE */
+  .collab-stage {
+    position: relative;
+    margin: 0 auto 80px;
+    max-width: 900px;
+  }
+
+  .stage-border-glow {
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--electric), var(--gold), var(--electric));
+    border-radius: 2px;
+    opacity: 0.4;
+    animation: borderPulse 3s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @keyframes borderPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.65; }
+  }
+
+  .stage-inner {
+    position: relative;
+    z-index: 1;
+    background: var(--black);
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .stage-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .collab-gif {
+    width: 100%;
+    height: auto;
+    display: block;
+    mix-blend-mode: screen;
+  }
+
+  /* Corner bracket accents */
+  .corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    z-index: 3;
+  }
+  .corner.tl { top: 8px; left: 8px;
+    border-top: 2px solid var(--electric);
+    border-left: 2px solid var(--electric); }
+  .corner.tr { top: 8px; right: 8px;
+    border-top: 2px solid var(--electric);
+    border-right: 2px solid var(--electric); }
+  .corner.bl { bottom: 8px; left: 8px;
+    border-bottom: 2px solid var(--gold);
+    border-left: 2px solid var(--gold); }
+  .corner.br { bottom: 8px; right: 8px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold); }
+
+  .stage-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--dim);
+    border: 1px solid var(--mid);
+    border-top: none;
+  }
+
+  .stage-cap-left {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--electric);
+    text-transform: uppercase;
+  }
+
+  .stage-cap-right {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* BOTTOM TWO COLUMNS */
+  .collab-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .collab-cta {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--mid);
+  }
+
+  .footer-left {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: #444455;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #444455;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--electric); }
+
+  /* ── QUESTION SECTION (Jevons / dual-use) ── */
+  .question-section {
+    padding: 140px 80px;
+    background: var(--black);
+    border-top: 1px solid var(--mid);
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .question-inner {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .question-section h2 {
+    margin-bottom: 0;
+  }
+
+  .jevons-quote {
+    padding: 48px 0;
+    margin: 32px 0 56px;
+    border-top: 1px solid var(--mid);
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .jevons-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2vw, 28px);
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .jevons-attr {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .question-body {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .question-body .body-text {
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+
+  .body-text.emphasis {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.2vw, 30px);
+    line-height: 1.5;
+    color: var(--white);
+    padding: 8px 0 8px 28px;
+    border-left: 2px solid var(--electric);
+  }
+
+  .body-text.emphasis.gold-rule {
+    border-left-color: var(--gold);
+  }
+
+  /* ── POSTURE SECTION (the doctrine) ── */
+  .posture-section {
+    padding: 140px 80px;
+    background: var(--dim);
+  }
+
+  .posture-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .posture-section h2 {
+    margin-bottom: 32px;
+    max-width: 900px;
+  }
+
+  .body-text.large {
+    font-size: 0.95rem;
+    line-height: 2;
+    max-width: 760px;
+    margin-bottom: 80px;
+  }
+
+  .gold-text { color: var(--gold); }
+
+  .posture-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-bottom: 88px;
+  }
+
+  .pillar {
+    border-top: 2px solid var(--gold);
+    padding-top: 24px;
+  }
+
+  .pillar-mark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .pillar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.55rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 22px;
+    line-height: 1.1;
+  }
+
+  .pillar-body {
+    font-size: 0.78rem;
+    line-height: 1.95;
+    color: #888899;
+  }
+
+  .posture-tagline {
+    text-align: center;
+    padding-top: 56px;
+    border-top: 1px solid var(--mid);
+  }
+
+  .tagline-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(28px, 3.4vw, 42px);
+    color: var(--gold);
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+
+  .tagline-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: #888899;
+    text-transform: uppercase;
+    line-height: 1.8;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* ── AMPLIFICATION POSTURE DISCLOSURE ── */
+  .amplification-posture {
+    max-width: 760px;
+    margin: 88px auto 0;
+    padding-top: 48px;
+    border-top: 1px solid var(--mid);
+    text-align: center;
+  }
+
+  .posture-disclosure-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .posture-disclosure {
+    font-family: 'Space Mono', monospace;
+    font-style: italic;
+    font-size: 0.78rem;
+    line-height: 1.95;
+    color: #888899;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .posture-disclosure strong {
+    color: var(--white);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .posture-disclosure a {
+    color: var(--electric);
+    text-decoration: none;
+    font-style: normal;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .posture-disclosure a:hover {
+    border-bottom-color: var(--electric);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: auto; padding: 0 32px 60px; }
+    .hero-stage { max-width: 100%; }
+    .hero-left { padding: 80px 32px; }
+    .science { grid-template-columns: 1fr; padding: 80px 32px; }
+    .flow { padding: 80px 32px; }
+    .flow-steps { grid-template-columns: 1fr 1fr; }
+    .flow-steps::before { display: none; }
+    .patent { grid-template-columns: 1fr; padding: 80px 32px; }
+    .question-section { padding: 80px 32px; }
+    .posture-section { padding: 80px 32px; }
+    .posture-pillars { grid-template-columns: 1fr; gap: 40px; margin-bottom: 64px; }
+    .body-text.large { margin-bottom: 56px; }
+    .ecco-collab { padding: 80px 32px; }
+    .collab-bottom { grid-template-columns: 1fr; gap: 48px; }
+    .stage-cap-left { display: none; }
+    footer { flex-direction: column; gap: 24px; padding: 48px 32px; text-align: center; }
+    .divider { margin: 0 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">Bonded Science · <span>Patent App. US19438644</span> · Derek Antoine Lee</p>
+    <h1>
+      <span class="strike">Heat.</span><br>
+      <span class="strike">Water.</span><br>
+      <em>Waste.</em><br>
+      Eliminated.
+    </h1>
+    <p class="hero-sub">
+      <strong>Zero-Heat. Zero-Water. Data Center Infrastructure.</strong><br>
+      A pre-entropy field architecture that collapses thermal waste before it exists — 
+      patented, documented, and standing in public for the world to see.
+    </p>
+    <div class="hero-cta">
+      <a href="#research" class="btn-primary">Read the Research</a>
+      <a href="#ecco" class="btn-ghost">ECCO Collaboration</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stage">
+      <div class="hero-stage-glow"></div>
+      <div class="hero-gif-wrap">
+        <img class="hero-gif" src="bonded_science_animation.gif" alt="Bonded Science Zero-Heat Architecture Animation" loading="lazy"/>
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+      </div>
+      <div class="hero-stage-caption">
+        <span class="stage-cap-left">CHIP → SENSOR → PULSE FIELD → COLLAPSE CONTROL → ZERO-HEAT OUTPUT</span>
+        <span class="stage-cap-right">Patent App. US19438644 · Derek Antoine Lee</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCIENCE -->
+<section class="science" id="science">
+  <div>
+    <p class="section-label">The Problem</p>
+    <h2>Data centers are<br><em>burning</em> the grid.</h2>
+    <p class="body-text">
+      The global data center industry consumes an estimated <strong>200+ terawatt-hours</strong> of electricity annually. 
+      A significant portion goes directly to cooling — fighting heat that didn't need to exist in the first place.<br><br>
+      Conventional cooling uses billions of gallons of water each year. 
+      The infrastructure powering AI, cloud, and communications is <strong>thermally unsustainable.</strong>
+    </p>
+  </div>
+  <div>
+    <p class="section-label gold">The Breakthrough</p>
+    <h2>Pre-entropy<br>stabilization.</h2>
+    <p class="body-text">
+      Derek Antoine Lee's <strong>Bonded Science framework</strong> proposes a different entry point: 
+      intercept entropy before it cascades into heat. Using pulse inversion and field collapse control, 
+      the architecture targets <strong>zero thermal output at the chip level</strong> — 
+      not heat removal after the fact, but heat prevention by design.
+    </p>
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">0°</div>
+        <div class="stat-label">Target Heat Output</div>
+      </div>
+      <div class="stat-card gold-border">
+        <div class="stat-num">0 gal</div>
+        <div class="stat-label">Water Consumed</div>
+      </div>
+      <div class="stat-card gold-border">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Zenodo Publications</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Patent Application Filed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow">
+  <div class="flow-header">
+    <p class="section-label" style="text-align:center">Architecture</p>
+    <h2 style="text-align:center">How it works</h2>
+  </div>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-dot">01</div>
+      <div class="step-title">Pulse Inversion</div>
+      <p class="step-body">Electromagnetic pulse fields inverted at the source layer, creating pre-entropic field stability around the chip substrate.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-dot">02</div>
+      <div class="step-title">Pre-Entropy</div>
+      <p class="step-body">Entropic cascade is intercepted before thermal energy has opportunity to propagate. Field continuity maintained.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-dot">03</div>
+      <div class="step-title">Collapse Field</div>
+      <p class="step-body">Collapse control layer stabilizes the surrounding environment. No heat byproduct to manage, no water cycle needed.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-dot">04</div>
+      <div class="step-title">Stable Zero Output</div>
+      <p class="step-body">Compute operates within a thermally neutral field. Infrastructure energy budget redirected entirely to computation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PATENT / RESEARCH -->
+<section class="patent" id="research">
+  <div class="patent-card">
+    <div class="patent-tag">Patent Application</div>
+    <div class="patent-num">US19438644</div>
+    <p class="patent-desc">
+      Zero-Heat, Zero-Water Data Center Infrastructure.<br>
+      Filed by Derek Antoine Lee, Founder of Bonded Science.<br><br>
+      Supporting research deposited and timestamped on Zenodo — 
+      an open-access scientific repository hosted by CERN — 
+      establishing provenance and priority of invention.
+    </p>
+    <div class="patent-links">
+      <a href="https://doi.org/10.5281/zenodo.18648464" target="_blank" class="patent-link">
+        Entropy Is Not Destiny — Zenodo 2026
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.17526990" target="_blank" class="patent-link">
+        Grid Guard Pulse Cooling System — Zenodo 2025
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.17117311" target="_blank" class="patent-link">
+        GridGuard Pulse: Emergency Resilience — Zenodo 2025
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.18425113" target="_blank" class="patent-link">
+        Field Preservation: Pre-Entropy Stabilization — Zenodo 2026
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.17969880" target="_blank" class="patent-link">
+        Magnetic Cooling Blueprint — Zenodo 2025
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <p class="section-label gold">The Inventor</p>
+    <h2>Derek Antoine Lee</h2>
+    <p class="body-text">
+      Founder of Bonded Science. Documenting this work in public — 
+      on record — because the world deserves to know that 
+      <strong>Zero Heat, Zero Water data centers are possible.</strong><br><br>
+      Not theory. Not a pitch deck. A filed patent application, 
+      a body of published research, and a man standing in front of 
+      the Ritz-Carlton with a handwritten sign proving it.<br><br>
+      Follow <strong>@derekantoinelee</strong> for ongoing development.
+    </p>
+    <div style="margin-top:40px; padding: 28px; border-left: 2px solid var(--electric); background: var(--dim);">
+      <p style="font-size:0.78rem; line-height:2; color:#888899; font-style:italic;">
+        "The world deserves to know that ZERO HEAT ZERO WATER DATA CENTERS are possible… 
+        I'm doing this for Record."
+      </p>
+      <p style="margin-top:16px; font-size:0.65rem; letter-spacing:0.2em; color: var(--gold); text-transform:uppercase;">
+        — Derek Antoine Lee, @treeminded
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTION BEHIND THE HEAT (Jevons / dual-use) -->
+<section class="question-section">
+  <div class="question-inner">
+    <p class="section-label gold">The Question Behind the Heat</p>
+
+    <div class="jevons-quote">
+      <p class="jevons-text">
+        "It is wholly a confusion of ideas to suppose that the economical use of fuel is equivalent to a diminished consumption. The very contrary is the truth."
+      </p>
+      <p class="jevons-attr">— W. Stanley Jevons · The Coal Question · 1865</p>
+    </div>
+
+    <h2>Efficiency without<br>posture is <em>acceleration.</em></h2>
+
+    <div class="question-body">
+      <p class="body-text">
+        Coal got more efficient. Coal use exploded.
+        Engines got more efficient. Vehicle-miles climbed.
+        Lighting got cheaper. Ambient lumens grew by orders of magnitude.<br><br>
+        Compute-per-watt has improved roughly four to five orders of magnitude over forty years.
+        Total compute consumption has grown <strong>faster.</strong>
+        Hyperscale data-center electricity demand is projected to roughly double by 2030 — driven primarily by AI training and inference.
+      </p>
+
+      <p class="body-text">
+        Cooling is currently the binding siting constraint on data-center expansion.
+        Water-stressed regions can't host hyperscale.
+        Thermal density caps how much compute fits per square meter.
+        Utility-scale grid commitments are required up front.
+      </p>
+
+      <p class="body-text emphasis">
+        Remove cooling as a constraint and the binding question becomes: <strong>who gets to scale, and toward what?</strong>
+      </p>
+
+      <p class="body-text">
+        A working zero-heat, zero-water cooling architecture is not, by itself, a solution to the data-center problem.
+        It is a removal of the constraint that has been quietly limiting it.
+        <strong>Total energy consumption goes up, not down.</strong>
+        AI training scales further. Surveillance infrastructure scales further. The manipulation economy scales further.
+      </p>
+
+      <p class="body-text">
+        Patent-licensing economics for a working zero-thermal cooling technology in 2026 are dominated by hyperscalers.
+        Without an enforceable doctrine of use, the path of least resistance routes the breakthrough straight into the infrastructure that needed it least.
+      </p>
+
+      <p class="body-text emphasis gold-rule">
+        That is the weapon hidden inside the gift.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- POSTURE REQUIRED (the doctrine) -->
+<section class="posture-section">
+  <div class="posture-inner">
+    <p class="section-label gold">The Posture Required</p>
+
+    <h2>Bonded Science is documented in public<br><em>for a reason.</em></h2>
+
+    <p class="body-text large">
+      Patent application filed. Research deposited at Zenodo. Attribution timestamped on independent infrastructure.<br><br>
+      The provenance trail is the first instrument. <strong class="gold-text">The doctrine is the second.</strong>
+    </p>
+
+    <div class="posture-pillars">
+      <div class="pillar">
+        <div class="pillar-mark">01 · MIRROR</div>
+        <div class="pillar-title">Provenance<br>Over Performance</div>
+        <p class="pillar-body">
+          The architecture stays attributable to its originator. Every reference, every citation routes back to Derek Antoine Lee. The mirror holds. The record persists. Attribution is permanent; use of the underlying work is reserved to the originator.
+        </p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-mark">02 · ANCHOR</div>
+        <div class="pillar-title">Sovereignty<br>Over Scale</div>
+        <p class="pillar-body">
+          Deployment patterns serve regulated, sovereign, and community-scale infrastructure before they serve hyperscale extraction. The technology requires posture; the posture refuses capture. Adjacent to the breakthrough is the discipline that decides where it goes.
+        </p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-mark">03 · LOCK</div>
+        <div class="pillar-title">Doctrine<br>Over Excuse</div>
+        <p class="pillar-body">
+          An efficiency breakthrough without an enforceable use-doctrine is a gift to whoever consumes most. The doctrine is what distinguishes Bonded Science as ECCO-amplified from Bonded Science as VC-amplified. Same physics. Different telos.
+        </p>
+      </div>
+    </div>
+
+    <div class="posture-tagline">
+      <p class="tagline-text">Data is the key. We Design &amp; Build the Lock.</p>
+      <p class="tagline-sub">
+        Bonded Science amplified through ECCO's framework means the lock comes with the key.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ECCO COLLAB SECTION -->
+<section class="ecco-collab" id="ecco">
+
+  <!-- TOP LABEL -->
+  <div class="collab-header">
+    <p class="collab-eyebrow">Ethereal Connections Co. · Site Steward for Bonded Science</p>
+    <h2 class="collab-title">The architecture<br>visualized.</h2>
+    <p class="collab-sub">
+      This is what Zero-Heat looks like in motion — 
+      chip to sensor to pulse field to collapse control to stable output.
+      No heat. No water. Just the science, animated.
+    </p>
+  </div>
+
+  <!-- GIF STAGE -->
+  <div class="collab-stage">
+    <div class="stage-border-glow"></div>
+    <div class="stage-inner">
+      <div class="stage-scanlines"></div>
+      <img
+        src="bonded_science_animation.gif"
+        alt="Bonded Science Zero-Heat Architecture — Animated"
+        class="collab-gif"
+        loading="lazy"
+      />
+      <!-- Corner accents -->
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+    </div>
+    <!-- Stage caption bar -->
+    <div class="stage-caption">
+      <span class="stage-cap-left">CHIP → SENSOR → PULSE FIELD → COLLAPSE CONTROL → ZERO-HEAT OUTPUT</span>
+      <span class="stage-cap-right">Patent App. US19438644 · Derek Antoine Lee</span>
+    </div>
+  </div>
+
+  <!-- BOTTOM: TWO COLUMNS -->
+  <div class="collab-bottom">
+    <div class="collab-col">
+      <p class="section-label gold">Immutable Provenance</p>
+      <p class="body-text">
+        ECCO amplifies original builders whose work carries permanent, 
+        unambiguous provenance. Derek's architecture is the kind of invention 
+        the <strong>Immutable Provenance framework</strong> was designed to 
+        protect and broadcast.<br><br>
+        Every post. Every visualization. Every amplification — 
+        <strong>attribution stays with the inventor.</strong>
+        That is Provenance Echo in practice.
+      </p>
+    </div>
+    <div class="collab-col">
+      <p class="section-label">Build With ECCO</p>
+      <p class="body-text">
+        If you're building something real — a filed patent, a documented 
+        framework, a body of research standing against the grain — 
+        ECCO provides the infrastructure to prove it: compliance architecture, 
+        data integrity systems, and sovereignty stack.<br><br>
+        <strong>No strings. No extraction. Just provenance, amplified.</strong>
+      </p>
+      <div class="collab-cta">
+        <a href="https://etherealconnectionsco.com" target="_blank" class="btn-primary">Visit ECCO</a>
+        <a href="mailto:jeremiah@etherealconnectionsco.com" class="btn-ghost">Open a Conversation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMPLIFICATION POSTURE DISCLOSURE -->
+  <div class="amplification-posture">
+    <p class="posture-disclosure-label">Rights Notice · Provenance</p>
+    <p class="posture-disclosure">
+      <strong>This site is built and hosted by Ethereal Connections Co. as a service to the inventor.</strong> Bonded Science is listed <strong>Private for Study</strong>. <strong>All rights and distribution rights are reserved to <a href="https://instagram.com/derekantoinelee" target="_blank" rel="noopener">Derek Antoine Lee</a>.</strong> No Creative Commons license applies. No reproduction, redistribution, derivative, or commercial use is granted beyond reading the publicly hosted materials in their original form. For inquiries regarding the framework, licensing, collaboration, or use beyond private study — direct correspondence to Derek Antoine Lee. Provenance stays with the originator.
+    </p>
+  </div>
+
+</section>
+<footer>
+  <div class="footer-left">
+    Bonded Science © Derek Antoine Lee · All Rights and Distribution Rights Reserved · Listed Private for Study · Site built by Ethereal Connections Co. · 2026
+  </div>
+  <div class="footer-right">
+    <a href="https://instagram.com/derekantoinelee" target="_blank" class="footer-link">@derekantoinelee</a>
+    <a href="https://instagram.com/etherealconnectionsco" target="_blank" class="footer-link">@etherealconnectionsco</a>
+    <a href="https://etherealconnectionsco.com" target="_blank" class="footer-link">ECCO →</a>
+  </div>
+</footer>
+
+</body>
+</html>
