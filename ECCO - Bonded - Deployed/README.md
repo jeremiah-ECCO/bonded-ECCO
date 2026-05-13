@@ -23,7 +23,7 @@ A site about Bonded Science: the framework, the architecture, the filing, the wo
 
 ECCO designed, built, and deploys this site as a service to the inventor. Derek Antoine Lee owns the Bonded Science framework and all materials. ECCO holds no rights to the underlying work, the patent, the deposits, or any representation of the science. Provenance stays with the originator.
 
-The site is hosted on Netlify, with the source maintained in the GitHub repository `bonded-ecco` under a service arrangement with Derek Antoine Lee.
+The site is hosted on Netlify, with the source maintained in the GitHub repository `bonded-ECCO` under a service arrangement with Derek Antoine Lee.
 
 ## Provenance
 
